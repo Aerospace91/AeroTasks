@@ -1,35 +1,45 @@
-from modules.filehandler import save_json, load_json
-import os
-
 def main():
-    path = "data/data.json"
     tasks = []
+    MENU = (
+        "\nWelcome to Aero Task List:\n"
+        "  1. View Task List\n"
+        "  2. Add Task\n"
+        "  3. Delete Task\n"
+        "  0. Quit\n"
+    )
     
     while True:
-        print("Welcome to Aero Task List, please read carefully as the following menu items have changed:")
-        print("#1 View Task List")
-        print("#2 Add Task to Task List")
-        print("#3 Delete Task from Task List")
-        user_input = input("Selection #: ")
+        print(MENU)
+        user_input = input("Selection #: ").strip()
         
         if user_input == "1":
-            if len(tasks) == 0:
-                print("\nNo Tasks Left, Congrats!\n")
             view_tasks(tasks)
         elif user_input == "2":
-            tasks.append(input("\nPlease describe Task to add: "))
+            task = input("Describe the task to add: ").strip()
+            if task:
+                tasks.append(task)
         elif user_input == "3":
             view_tasks(tasks)
-            task_to_remove = int(input("\nEnter Number of task to remove: "))
-            tasks.pop(task_to_remove - 1)
+            if tasks:
+                try:
+                    idx = int(input("\nEnter Number of task to remove: "))
+                    tasks.pop(idx - 1)
+                except (ValueError, IndexError):
+                    print("Invalid Selection")
+        elif user_input == "0":
+            print("Goodbye!")
+            break
         else:
-            print("\nInvalid Selection\n")
+            print("Invalid Selection")
+
             
             
 def view_tasks(tasks):
-    print()
-    for i in range(len(tasks)):
-        print(f"{i + 1}: {tasks[i]}")
+    if not tasks:
+        print("No Tasks Left, Congrats!\n")
+    else:
+        for i, task in enumerate(tasks, 1):
+            print(f"{i}: {task}")
 
     
 
